@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Entrar - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Entrar</h1>
+    <p>Acesse as funções do seu perfil.</p>
+  </div>
+</div>
+
+<form class="card" method="post">
+  <div class="form-row">
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" autocomplete="email" required>
+  </div>
+  <div class="form-row">
+    <label for="password">Senha</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required>
+  </div>
+  <button class="button" type="submit">Entrar</button>
+</form>
+{% endblock %}

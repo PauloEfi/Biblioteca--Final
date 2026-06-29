@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img" aria-label="BiblioTech">
+  <rect width="96" height="96" rx="18" fill="#163832"/>
+  <rect x="18" y="24" width="14" height="48" rx="3" fill="#67c6b0"/>
+  <rect x="38" y="18" width="14" height="54" rx="3" fill="#f4c95d"/>
+  <rect x="58" y="28" width="14" height="44" rx="3" fill="#f2efe6"/>
+  <rect x="19" y="60" width="52" height="4" rx="2" fill="#0f241f" opacity=".45"/>
+  <rect x="22" y="32" width="6" height="2" rx="1" fill="#0f241f" opacity=".5"/>
+  <rect x="42" y="28" width="6" height="2" rx="1" fill="#0f241f" opacity=".5"/>
+  <rect x="62" y="36" width="6" height="2" rx="1" fill="#0f241f" opacity=".5"/>
+</svg>

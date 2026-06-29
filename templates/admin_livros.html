@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Livros - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Livros do acervo</h1>
+    <p>Cadastro, edição e remoção lógica dos livros físicos.</p>
+  </div>
+  <a class="button" href="{{ url_for('new_book') }}">Novo livro</a>
+</div>
+
+<div class="table-wrap">
+  {% if books %}
+    <table>
+      <thead>
+        <tr>
+          <th>Titulo</th>
+          <th>Categoria</th>
+          <th>Ano</th>
+          <th>Estoque</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+          <tr>
+            <td><strong>{{ book.title }}</strong><br><span class="muted">ISBN {{ book.isbn }} - {{ book.authors }}</span></td>
+            <td>{{ book.category }}</td>
+            <td>{{ book.publication_year }}</td>
+            <td>{{ book.available_copies }} disponíveis de {{ book.total_copies }}</td>
+            <td>
+              <a class="button secondary" href="{{ url_for('edit_book', book_id=book.id) }}">Editar</a>
+              <form class="inline-form" method="post" action="{{ url_for('delete_book', book_id=book.id) }}" onsubmit="return confirm('Remover este livro do acervo?');">
+                <button class="button danger" type="submit">Excluir</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty">Nenhum livro cadastrado.</p>
+  {% endif %}
+</div>
+{% endblock %}

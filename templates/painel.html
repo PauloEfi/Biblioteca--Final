@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Meu painel - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Meu painel</h1>
+    <p>{{ g.user.name }} - {{ g.user.role|role_label }}</p>
+  </div>
+  {% if g.user.role == 'professor' %}
+    <a class="button" href="{{ url_for('new_acquisition_request') }}">Solicitar aquisição</a>
+  {% endif %}
+</div>
+
+<section>
+  <h2 class="section-title">Meus empréstimos</h2>
+  <div class="table-wrap">
+    {% if loans %}
+      <table>
+        <thead>
+          <tr>
+            <th>Livro</th>
+            <th>Retirada</th>
+            <th>Prevista</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for loan in loans %}
+            <tr>
+              <td><strong>{{ loan.title }}</strong><br><span class="muted">{{ loan.authors }}</span></td>
+              <td>{{ loan.loan_date|brdate }}</td>
+              <td>{{ loan.due_date|brdate }}</td>
+              <td>
+                {% if loan.returned_at %}
+                  <span class="badge success">Devolvido em {{ loan.returned_at|brdate }}</span>
+                {% elif loan.is_overdue %}
+                  <span class="badge danger">Atrasado</span>
+                {% else %}
+                  <span class="badge success">Em dia</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="empty">Nenhum empréstimo registrado.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% if g.user.role == 'professor' %}
+  <section style="margin-top: 28px;">
+    <h2 class="section-title">Minhas solicitações</h2>
+    <div class="table-wrap">
+      {% if requests %}
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Categoria</th>
+              <th>Status</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in requests %}
+              <tr>
+                <td><strong>{{ item.title }}</strong><br><span class="muted">{{ item.authors }}</span></td>
+                <td>{{ item.category }}</td>
+                <td>
+                  <span class="badge">{{ item.status|capitalize }}</span>
+                </td>
+                <td>
+                  {{ item.created_at|brdate }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty">Nenhuma solicitação enviada.</p>
+    {% endif %}
+    </div>
+  </section>
+{% endif %}
+{% endblock %}

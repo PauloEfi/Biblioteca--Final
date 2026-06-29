@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Solicitações - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Solicitações de aquisição</h1>
+    <p>Sugestões enviadas por professores para avaliação.</p>
+  </div>
+</div>
+
+<div class="table-wrap">
+  {% if requests %}
+    <table>
+      <thead>
+        <tr>
+          <th>Livro sugerido</th>
+          <th>Professor</th>
+          <th>Justificativa</th>
+          <th>Status</th>
+          <th>Avaliação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in requests %}
+          <tr>
+            <td>
+              <strong>{{ item.title }}</strong><br>
+              <span class="muted">{{ item.authors }} - {{ item.category }}</span>
+              {% if item.publisher %}<br><span class="muted">{{ item.publisher }}</span>{% endif %}
+            </td>
+            <td>{{ item.user_name }}<br><span class="muted">{{ item.user_email }}</span></td>
+            <td>{{ item.justification or '-' }}</td>
+            <td><span class="badge">{{ item.status|status_label}}</span></td>
+            <td>
+              <form method="post" action="{{ url_for('update_request_status', request_id=item.id) }}">
+                <select name="status" aria-label="Status">
+                  <option value="pendente" {% if item.status == 'pendente' %}selected{% endif %}>Pendente</option>
+                  <option value="aprovada" {% if item.status == 'aprovada' %}selected{% endif %}>Aprovada</option>
+                  <option value="recusada" {% if item.status == 'recusada' %}selected{% endif %}>Recusada</option>
+                </select>
+                <button class="button secondary" type="submit">Salvar</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty">Nenhuma solicitação recebida.</p>
+  {% endif %}
+</div>
+{% endblock %}

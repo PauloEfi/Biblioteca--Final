@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Novo empréstimo - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Novo empréstimo</h1>
+    <p>O prazo e o limite são calculados automaticamente pelo perfil.</p>
+  </div>
+  <a class="button secondary" href="{{ url_for('admin_emprestimos') }}">Voltar</a>
+</div>
+
+<form class="card" method="post">
+  <div class="form-grid">
+    
+    <div class="form-row">
+      <label for="user_id">Usuário</label>
+      <select id="user_id" name="user_id" required>
+        <option value="">Selecione um usuário...</option>
+        {% for user in users %}
+          <option value="{{ user.id }}">
+            {{ user.name }} - {{ user.role|role_label }} ({{ user.email }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="book_id">Livro</label>
+      <select id="book_id" name="book_id" required>
+        <option value="">Selecione um livro...</option>
+        {% for book in books %}
+          <option value="{{ book.id }}">
+            {{ book.title }} - {{ book.available_copies }} disponível(is)
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+  </div>
+  
+  <button class="button" type="submit">Registrar empréstimo</button>
+</form>
+{% endblock %}

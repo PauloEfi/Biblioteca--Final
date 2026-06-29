@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Painel administrativo - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Painel do bibliotecário</h1>
+    <p>Visão rápida do acervo, usuários e movimentação.</p>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card metric"><span>Usuários ativos</span><strong>{{ stats.users }}</strong></div>
+  <div class="card metric"><span>Livros no acervo</span><strong>{{ stats.books }}</strong></div>
+  <div class="card metric"><span>Empréstimos ativos</span><strong>{{ stats.active_loans }}</strong></div>
+  <div class="card metric"><span>Usuários com atraso</span><strong>{{ stats.overdue_users }}</strong></div>
+</div>
+
+<section style="margin-top: 28px;">
+  <h2 class="section-title">Movimentações recentes</h2>
+  <div class="table-wrap">
+    {% if recent_loans %}
+      <table>
+        <thead>
+          <tr>
+            <th>Livro</th>
+            <th>Usuário</th>
+            <th>Retirada</th>
+            <th>Prevista</th>
+            <th>Devolução</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for loan in recent_loans %}
+            <tr>
+              <td>{{ loan.book_title }}</td>
+              <td>{{ loan.user_name }} <span class="muted">({{ loan.role|role_label }})</span></td>
+              <td>{{ loan.loan_date|brdate }}</td>
+              <td>{{ loan.due_date|brdate }}</td>
+              <td>{{ loan.returned_at|brdate }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="empty">Nenhuma movimentação registrada.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

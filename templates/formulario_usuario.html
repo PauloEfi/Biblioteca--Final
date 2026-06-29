@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Novo usuário - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Novo usuário</h1>
+    <p>Defina o perfil de acesso e a senha inicial.</p>
+  </div>
+  <a class="button secondary" href="{{ url_for('admin_usuarios') }}">Voltar</a>
+</div>
+
+<form class="card" method="post">
+  <div class="form-grid">
+    <div class="form-row">
+      <label for="name">Nome</label>
+      <input id="name" name="name" value="{{ request.form.get('name', '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" name="email" value="{{ request.form.get('email', '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="role">Perfil</label>
+      <select id="role" name="role" required>
+        <option value="">Selecione</option>
+        {% for value, label in roles.items() %}
+          <option value="{{ value }}" {% if request.form.get('role') == value %}selected{% endif %}>
+            {{ label }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-row">
+      <label for="password">Senha inicial</label>
+      <input id="password" type="password" name="password" minlength="6" required>
+    </div>
+  </div>
+  <button class="button" type="submit">Cadastrar usuário</button>
+</form>
+{% endblock %}

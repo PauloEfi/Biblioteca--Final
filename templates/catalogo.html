@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Acervo - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Acervo da biblioteca</h1>
+    <p>Consulta pública de livros com busca por título, autor, ISBN ou categoria.</p>
+  </div>
+</div>
+
+<form class="toolbar" method="get">
+  <input type="search" name="q" value="{{ q }}" placeholder="Buscar por título, autor ou ISBN" aria-label="Busca">
+  <select name="category" aria-label="Categoria">
+    <option value="">Todas as categorias</option>
+    {% for item in categories %}
+      <option value="{{ item.category }}" {% if selected_category == item.category %}selected{% endif %}>
+        {{ item.category }}
+      </option>
+    {% endfor %}
+  </select>
+  <button class="button" type="submit">Buscar</button>
+  <a class="button secondary" href="{{ url_for('catalogo') }}">Limpar</a>
+</form>
+
+<div class="table-wrap">
+  {% if books %}
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Autores</th>
+          <th>Categoria</th>
+          <th>Disponíveis</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+          <tr>
+            <td><strong>{{ book.title }}</strong><br><span class="muted">ISBN {{ book.isbn }}</span></td>
+            <td>{{ book.authors }}</td>
+            <td>{{ book.category }}</td>
+            <td>{{ book.available_copies }} de {{ book.total_copies }}</td>
+            <td><a class="button secondary" href="{{ url_for('detalhe_livro', book_id=book.id) }}">Detalhes</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="empty">Nenhum livro encontrado.</p>
+  {% endif %}
+</div>
+{% endblock %}

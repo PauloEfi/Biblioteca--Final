@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ book.title }} - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{{ book.title }}</h1>
+    <p>{{ book.authors }}</p>
+  </div>
+  <a class="button secondary" href="{{ url_for('catalogo') }}">Voltar ao acervo</a>
+</div>
+
+<div class="split">
+  <section class="card">
+    <h2 class="section-title">Ficha do livro</h2>
+    <table>
+      <tbody>
+        <tr><th>ISBN</th><td>{{ book.isbn }}</td></tr>
+        <tr><th>Categoria</th><td>{{ book.category }}</td></tr>
+        <tr><th>Editora</th><td>{{ book.publisher }}</td></tr>
+        <tr><th>Ano</th><td>{{ book.publication_year }}</td></tr>
+        <tr><th>Total</th><td>{{ book.total_copies }}</td></tr>
+        <tr><th>Disponíveis</th><td>{{ book.available_copies }}</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <aside class="card">
+    <h2 class="section-title">Disponibilidade</h2>
+    {% if book.available_copies > 0 %}
+      <p><span class="badge success">Disponível</span></p>
+      <p class="muted">Procure o bibliotecário para registrar o empréstimo.</p>
+    {% else %}
+      <p><span class="badge warning">Indisponível</span></p>
+      <p class="muted">Todos os exemplares estão emprestados no momento.</p>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

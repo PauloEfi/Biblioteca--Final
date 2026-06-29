@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{% if book %}Editar livro{% else %}Novo livro{% endif %} - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{% if book %}Editar livro{% else %}Novo livro{% endif %}</h1>
+    {% if book %}
+      <p>{{ active_loans }} exemplar(es) emprestado(s) no momento.</p>
+    {% else %}
+      <p>Informe os dados essenciais do acervo.</p>
+    {% endif %}
+  </div>
+  <a class="button secondary" href="{{ url_for('admin_livros') }}">Voltar</a>
+</div>
+
+<form class="card" method="post">
+  <div class="form-grid">
+    <div class="form-row">
+  <label for="isbn">ISBN</label>
+  <input 
+    type="text" 
+    id="isbn" 
+    name="isbn" 
+    maxlength="13" 
+    pattern="[0-9\-]+" 
+    title="O ISBN deve conter apenas números e hífens."
+    value="{{ book.isbn if book else '' }}" 
+    required>
+</div>
+    <div class="form-row">
+      <label for="title">Título</label>
+      <input id="title" name="title" value="{{ request.form.get('title', book.title if book else '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="authors">Autores</label>
+      <input id="authors" name="authors" value="{{ request.form.get('authors', book.authors if book else '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="category">Categoria</label>
+      <input id="category" name="category" value="{{ request.form.get('category', book.category if book else '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="publisher">Editora</label>
+      <input id="publisher" name="publisher" value="{{ request.form.get('publisher', book.publisher if book else '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="publication_year">Ano</label>
+      <input id="publication_year" type="number" min="0" name="publication_year" value="{{ request.form.get('publication_year', book.publication_year if book else '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="total_copies">Total de exemplares</label>
+      <input id="total_copies" type="number" min="0" name="total_copies" value="{{ request.form.get('total_copies', book.total_copies if book else '') }}" required>
+    </div>
+  </div>
+  <button class="button" type="submit">{% if book %}Salvar alterações{% else %}Cadastrar livro{% endif %}</button>
+</form>
+{% endblock %}

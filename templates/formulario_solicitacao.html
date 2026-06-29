@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Solicitar aquisição - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Solicitar aquisição</h1>
+    <p>Sugira um novo livro para avaliação do bibliotecário.</p>
+  </div>
+  <a class="button secondary" href="{{ url_for('painel') }}">Voltar</a>
+</div>
+
+<form class="card" method="post">
+  <div class="form-grid">
+    <div class="form-row">
+      <label for="title">Titulo</label>
+      <input id="title" name="title" value="{{ request.form.get('title', '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="authors">Autores</label>
+      <input id="authors" name="authors" value="{{ request.form.get('authors', '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="category">Categoria</label>
+      <input id="category" name="category" value="{{ request.form.get('category', '') }}" required>
+    </div>
+    <div class="form-row">
+      <label for="publisher">Editora</label>
+      <input id="publisher" name="publisher" value="{{ request.form.get('publisher', '') }}">
+    </div>
+    <div class="form-row full">
+      <label for="justification">Justificativa</label>
+      <textarea id="justification" name="justification">{{ request.form.get('justification', '') }}</textarea>
+    </div>
+  </div>
+  <button class="button" type="submit">Enviar solicitação</button>
+</form>
+{% endblock %}

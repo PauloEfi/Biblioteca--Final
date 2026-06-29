@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Erro de banco - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Falha ao acessar o banco de dados</h1>
+  <p>Confira o arquivo `.env`. Para testar sem MySQL, use `DB_DRIVER=sqlite`. Para MySQL, confira se o servidor está ativo e se o banco foi criado com `schema.sql`.</p>
+  <p class="muted">{{ error }}</p>
+</div>
+{% endblock %}

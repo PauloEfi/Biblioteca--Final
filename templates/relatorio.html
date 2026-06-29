@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Relatorios - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Relatório estatístico</h1>
+    <p>Dados consolidados para apoio a decisão do bibliotecário.</p>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card metric">
+    <span>Total de empréstimos ativos</span>
+    <strong>{{ active_total }}</strong>
+  </div>
+</div>
+
+<section style="margin-top: 28px;">
+  <h2 class="section-title">Livros por categoria</h2>
+  <div class="table-wrap">
+    {% if category_stats %}
+      <table>
+        <thead>
+          <tr>
+            <th>Categoria</th>
+            <th>Registros</th>
+            <th>Exemplares</th>
+            <th>Disponíveis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in category_stats %}
+            <tr>
+              <td>{{ row.category }}</td>
+              <td>{{ row.book_records }}</td>
+              <td>{{ row.total_copies }}</td>
+              <td>{{ row.available_copies }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="empty">Nenhuma categoria cadastrada.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section style="margin-top: 28px;">
+  <h2 class="section-title">Usuários com atraso</h2>
+  <div class="table-wrap">
+    {% if overdue %}
+      <table>
+        <thead>
+          <tr>
+            <th>Usuário</th>
+            <th>Livro</th>
+            <th>Prevista</th>
+            <th>Dias de atraso</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in overdue %}
+            <tr>
+              <td>{{ item.user_name }}<br><span class="muted">{{ item.email }} - {{ item.role|role_label }}</span></td>
+              <td>{{ item.book_title }}</td>
+              <td>{{ item.due_date|brdate }}</td>
+              <td><span class="badge danger">{{ item.days_late }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="empty">Nao ha usuários com livros atrasados.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

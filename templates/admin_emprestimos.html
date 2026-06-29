@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Empréstimos - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Empréstimos</h1>
+    <p>Controle de saída, prazo e devolução dos exemplares.</p>
+  </div>
+  <a class="button" href="{{ url_for('new_loan') }}">Novo empréstimo</a>
+</div>
+
+<section>
+  <h2 class="section-title">Ativos</h2>
+  <div class="table-wrap">
+    {% if active_loans %}
+      <table>
+        <thead>
+          <tr>
+            <th>Livro</th>
+            <th>Usuário</th>
+            <th>Retirada</th>
+            <th>Prevista</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for loan in active_loans %}
+            <tr>
+              <td>{{ loan.book_title }}</td>
+              <td>{{ loan.user_name }} <span class="muted">({{ loan.role|role_label }})</span></td>
+              <td>{{ loan.loan_date[8:10] }}/{{ loan.loan_date[5:7] }}/{{ loan.loan_date[:4] }}</td>
+              <td>{{ loan.due_date[8:10] }}/{{ loan.due_date[5:7] }}/{{ loan.due_date[:4] }}</td>
+              <td>
+                {% if loan.is_overdue %}
+                  <span class="badge danger">Atrasado</span>
+                {% else %}
+                  <span class="badge success">Em dia</span>
+                {% endif %}
+              </td>
+              <td>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                   <form method="POST"
+                   action="{{ url_for('return_loan', loan_id=loan.id) }}"
+                   onsubmit="return confirm('Confirmar a devolução deste livro?');">
+                   <button type="submit" class="button secondary">
+                Devolução
+            </button>
+        </form>
+    </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="empty">Nenhum empréstimo ativo.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section style="margin-top: 28px;">
+  <h2 class="section-title">Histórico recente</h2>
+  <div class="table-wrap">
+    {% if returned_loans %}
+      <table>
+        <thead>
+          <tr>
+            <th>Livro</th>
+            <th>Usuário</th>
+            <th>Retirada</th>
+            <th>Prevista</th>
+            <th>Devolução</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for loan in returned_loans %}
+            <tr>
+              <td>{{ loan.book_title }}</td>
+              <td>{{ loan.user_name }} <span class="muted">({{ loan.role|role_label }})</span></td>
+              <td>{{ loan.loan_date|brdate }}</td>
+              <td>{{ loan.due_date|brdate }}</td>
+              <td>{{ loan.returned_at|brdate }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="empty">Nenhuma devolução registrada.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Usuários - BiblioTech{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Usuários</h1>
+    <p>Cadastro realizado exclusivamente pelo bibliotecário.</p>
+  </div>
+  <a class="button" href="{{ url_for('create_user') }}">Novo usuário</a>
+</div>
+
+<div class="table-wrap">
+  {% if users %}
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Perfil</th>
+          <th>Status</th>
+          <th>Criado em</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role|role_label }}</td>
+            
+
+            <td>
+              {% if user.active %}
+                <span class="badge success">Ativo</span>
+              {% else %}
+                <span class="badge warning">Inativo</span>
+              {% endif %}
+            </td>
+
+            <td>{{ user.created_at|brdate }}</td>
+
+            <td>
+              <form action="{{ url_for('delete_user', user_id=user.id) }}"
+                    method="POST"
+                    style="display:inline;"
+                    onsubmit="return confirm('Deseja realmente excluir este usuário?');">
+
+                <button type="submit" class="button danger">
+                  Excluir
+                </button>
+
+              </form>
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  {% else %}
+    <p class="empty">Nenhum usuário cadastrado.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

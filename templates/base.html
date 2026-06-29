@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/x-icon">
+  <title>{% block title %}BiblioTech{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="{{ url_for('catalogo') }}">
+        <img src="{{ url_for('static', filename='logo.svg') }}" alt="">
+        <span>BiblioTech</span>
+      </a>
+      <nav class="nav" aria-label="Navegacao principal">
+        <a href="{{ url_for('catalogo') }}">Acervo</a>
+        {% if g.user %}
+          {% if g.user.role == 'admin' %}
+            <a href="{{ url_for('admin_inicio') }}">Painel</a>
+            <a href="{{ url_for('admin_usuarios') }}">Usuários</a>
+            <a href="{{ url_for('admin_livros') }}">Livros</a>
+            <a href="{{ url_for('admin_emprestimos') }}">Empréstimos</a>
+            <a href="{{ url_for('relatorio') }}">Relatórios</a>
+            <a href="{{ url_for('admin_solicitacoes') }}">Solicitações</a>
+          {% else %}
+            <a href="{{ url_for('painel') }}">Meu painel</a>
+          {% endif %}
+          <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit">Sair</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('login') }}">Entrar</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-list">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
