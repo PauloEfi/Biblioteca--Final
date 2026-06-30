@@ -1038,3 +1038,5 @@ def relatorio():
         active_total=active_total,
         overdue=overdue,
     )
+if __name__ == "__main__":
+    app.run(debug=True)
