@@ -3,6 +3,7 @@ from functools import wraps
 import os
 from pathlib import Path
 import sqlite3
+
 from flask import (
     Flask,
     flash,
@@ -299,7 +300,6 @@ def formulario_livro_data():
     )
     
     isbn = form.get("isbn", "").strip()
-    
     if isbn:
         if len(isbn) > 13:
             errors.append("O ISBN deve ter no máximo 13 dígitos.")
@@ -1038,16 +1038,3 @@ def relatorio():
         active_total=active_total,
         overdue=overdue,
     )
-
-
-@app.errorhandler(sqlite3.Error)
-def database_error(error):
-    return render_template("db_error.html", error=error), 500
-
-
-if mysql_connector is not None:
-    app.register_error_handler(mysql_connector.Error, database_error)
-
-
-if __name__ == "__main__":
-    app.run(debug=os.getenv("FLASK_DEBUG", "1") == "1")

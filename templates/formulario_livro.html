@@ -45,7 +45,7 @@
       <input id="publisher" name="publisher" value="{{ request.form.get('publisher', book.publisher if book else '') }}" required>
     </div>
     <div class="form-row">
-      <label for="publication_year">Ano</label>
+      <label for="publication_year">Ano da Edição</label>
       <input id="publication_year" type="number" min="0" name="publication_year" value="{{ request.form.get('publication_year', book.publication_year if book else '') }}" required>
     </div>
     <div class="form-row">
